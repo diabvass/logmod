@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>Test MyLog</title>
+</head>
+<body>
+  <h1>Test API MyLog</h1>
+  <button onclick="inscrit()">Inscrire</button>
+  <button onclick="connecter()">Connecter</button>
+  <button onclick="getUsers()">Users</button>
+  <button onclick="deconnecter()">Deconnecter</button>
+  <pre id="result">En attente...</pre>
+
+<script>
+  const resultEl = document.getElementById('result');
+  const API = "http://127.0.0.1:8000";
+
+  async function inscrit() {
+    const res = await fetch(`${API}/api/users/created`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ nom_user: "Fatou", role: "gerant", telephone_user: "0506429942", mot_de_passe_user: "admin" })
+    });
+    resultEl.textContent = JSON.stringify(await res.json(), null, 2);
+  }
+  async function connecter(){
+    const res = await fetch(`${API}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ telephone_user: "0500340733", mot_de_passe_user: "admin" })
+    });
+    resultEl.textContent = JSON.stringify(await res.json(), null, 2);
+  }
+  async function getUsers() {
+    const res = await fetch(`${API}/api/users/all`, { credentials: "include" });
+    resultEl.textContent = JSON.stringify(await res.json(), null, 2);
+  }
+  async function deconnecter() {
+    const res = await fetch(`${API}/api/logout`, { credentials: "include" });
+    resultEl.textContent = JSON.stringify(await res.json(), null, 2);
+  }
+</script>
+</body>
+</html>
